@@ -1,3 +1,5 @@
+{% url 'menu' as menu_url %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +19,7 @@
         <!--Navbar-->
         <nav class="navbar navbar-expand-md bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="#">
+                <a class="navbar-brand d-flex align-items-center" href="/">
                     <div class="text-center">Heaven <br> Pizza</div>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -27,10 +29,10 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                     <ul class="navbar-nav align-items-center">
                         <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Menu</a>
+                            <a class="nav-link" href="{{menu_url}}">Menu</a>
                         </li>
                         <li class="nav-item me-3">
                             <a class="nav-link" href="#">Book Now</a>
