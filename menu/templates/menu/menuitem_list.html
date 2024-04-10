@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2">
+        {% for item in menuitem_list %}
+        <div class="col mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="img-fluid">
+                        </div>
+                        <div class="col-8">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <div class="d-flex flex-column mb-2">
+                                <div class="d-flex align-items-center">
+                                    <small class="text-muted">{{ item.price }}</small>
+                                    {% if item.badge %}
+                                    <span class="badge bg-primary ms-2">{{ item.badge }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <p class="card-text">
+                                {{ item.description }}
+                                <small class="text-muted">{{ item.kcal }} kcal</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
