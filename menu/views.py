@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.views import generic
 from .models import MenuItem
 
 # Create your views here
-class MenuItemList(generic.ListView):
-    # View to show the menu items
+def MenuItemList(request):
+    # Gets all the items form the menu
     queryset = MenuItem.objects.all()
-    template_name = "menu.html"
+    # Gets the distincts types of the items.
+    types = MenuItem.objects.values_list('type', flat=True).distinct()
+    return render(request, 'menu/menuitem_list.html', {'types': types , 'items':queryset})
