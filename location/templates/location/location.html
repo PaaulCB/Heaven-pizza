@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mb-3 mt-3">
+    <div class="row justify-content-center pb-3">
+        <div class="col-auto">
+            <h3>Find us here!</h3>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extras %}
+<script src="{% static 'js/location.js' %}"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCIerG-Xug7_bb_bbPfYz0IHT1f7a2SpP8&language=en&callback=initMap"></script>
+{% endblock %}

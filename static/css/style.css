@@ -1,3 +1,7 @@
 .type-active{
     background-color: aquamarine;
 }
+/*Map styles*/
+div#map {
+    height: 70vh;
+}
