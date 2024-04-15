@@ -1,5 +1,8 @@
 {% url 'menu' as menu_url %}
 {% url 'location' as location_url %}
+{% url 'account_login' as login_url %}
+{% url 'account_signup' as signup_url %}
+{% url 'account_logout' as logout_url %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +52,7 @@
                         <li class="nav-item">
                             <div class="row">
                                 <div class="col text-center">
-                                    Hello Username
+                                    Hello {{user.username}}
                                 </div>
                             </div>
                             <div class="row">
@@ -57,16 +60,16 @@
                                     <a class="nav-link" href="#">Manage </a>
                                 </div>
                                 <div class="col">
-                                    <a class="nav-link" href="#">Signout</a>
+                                    <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
                                 </div>
                             </div>
                         </li>
                         {% else %}
                         <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Sign up</a>
+                            <a class="nav-link {% if request.path == signup_url %}active{% endif %}" aria-current="page" href="{% url 'account_signup' %}">Sign up</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Login</a>
+                            <a class="nav-link {% if request.path == login_url %}active{% endif %}" aria-current="page" href="{% url 'account_login' %}">Login</a>
                         </li>
                         {% endif %}
                     </ul>
