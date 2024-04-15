@@ -43,9 +43,6 @@
                             <a class="nav-link" href="{{menu_url}}">Menu</a>
                         </li>
                         <li class="nav-item me-3">
-                            <a class="nav-link" href="#">Book Now</a>
-                        </li>
-                        <li class="nav-item me-3">
                             <a class="nav-link" href="{{location_url}}">Location</a>
                         </li>
                         {% if user.is_authenticated %}
@@ -57,7 +54,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <a class="nav-link" href="#">Manage </a>
+                                    <a class="nav-link no-wrap" href="#">My Bookings </a>
                                 </div>
                                 <div class="col">
                                     <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>

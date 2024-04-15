@@ -5,3 +5,7 @@
 div#map {
     height: 70vh;
 }
+
+.no-wrap{
+    white-space: nowrap;
+}
