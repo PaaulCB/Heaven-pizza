@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% url 'menu' as menu_url %}
+{% url 'booking' as booking_url %}
 {% url 'account_signup' as signup_url %}
 {% block content %}
 <div class="container mb-3 mt-3">
@@ -15,7 +16,7 @@
         </div>
         <div class="col">
             {% if user.is_authenticated %}
-            <a href="#"> Book a table now!</a>
+            <a href="{{booking_url}}"> Book a table now!</a>
             {% else %}
             <a href="{{signup_url}}"> Sign up to book a table!</a>
             {% endif %}

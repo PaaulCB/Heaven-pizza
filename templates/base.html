@@ -1,5 +1,6 @@
 {% url 'menu' as menu_url %}
 {% url 'location' as location_url %}
+{% url 'booking' as booking_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
@@ -54,7 +55,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <a class="nav-link no-wrap" href="#">My Bookings </a>
+                                    <a class="nav-link no-wrap" href="{{booking_url}}">My Bookings </a>
                                 </div>
                                 <div class="col">
                                     <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>
