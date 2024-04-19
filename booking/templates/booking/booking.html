@@ -1,5 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div>works</div>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <div class="alert alert-{% if "success" in message.tags %}success{%else%}danger{%endif%} alert-dismissible fade show" role="alert">
+            {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
+    <form method="POST" action="{% url 'FindBooking' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="number_of_guests" class="form-label">Number of guests:</label>
+            <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" required>
+        </div>
+        <div class="mb-3">
+            <label for="booking_date" class="form-label">Date:</label>
+            <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+        </div>
+        <div class="mb-3">
+            <label for="booking_time" class="form-label">Time:</label>
+            <input type="time" class="form-control" id="booking_time" name="booking_time" required>
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="child_chair" name="child_chair">
+            <label class="form-check-label" for="child_chair">Do you need child chair?</label>
+        </div>
+        <div class="mb-3">
+            <label for="allergies" class="form-label">Allergies(optional):</label>
+            <textarea class="form-control" id="allergies" name="allergies" rows="3"></textarea>
+        </div>
+        <div class="text-center mb-3"><button type="submit" class="btn btn-primary">Find table</button></div>
+        
+    </form>
+</div>
 {% endblock %}
