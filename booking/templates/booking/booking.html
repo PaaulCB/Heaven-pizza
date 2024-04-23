@@ -12,7 +12,7 @@
 </ul>
 {% endif %}
 <div class="container">
-    <form method="POST" action="{% url 'FindBooking' %}">
+    <form method="POST" action="{% url 'make_booking' %}" id="booking-form">
         {% csrf_token %}
         <div class="mb-3">
             <label for="number_of_guests" class="form-label">Number of guests:</label>
@@ -34,8 +34,14 @@
             <label for="allergies" class="form-label">Allergies(optional):</label>
             <textarea class="form-control" id="allergies" name="allergies" rows="3"></textarea>
         </div>
-        <div class="text-center mb-3"><button type="submit" class="btn btn-primary">Find table</button></div>
-        
+        <div class="text-center mb-3"><button type="submit" name="form-button" value = "find_table" class="btn btn-primary" id="find-table-btn">Find table</button></div>
+        <div class="text-center mb-3" id="booking-results"></div>
     </form>
+
+    
 </div>
+{% endblock %}
+{% block extras %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="{% static 'js/booking.js' %}"></script>
 {% endblock %}
