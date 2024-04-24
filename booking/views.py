@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import make_aware
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from .models import Table, BookingTime, Booking
 from django.contrib import messages
 from django.http import JsonResponse
+from django.db import transaction
 # Constant to store the duration of the booking
 BOOKING_DURATION = timedelta(hours=1)
 BOOKING_INTERVAL = timedelta(minutes=30)
@@ -151,3 +152,67 @@ def my_bookings(request):
         })
     else:
         return render(request, 'booking/no_authenticated.html')
+
+
+def delete_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    if booking.user == request.user:
+        booking.delete()
+        messages.add_message(request, messages.SUCCESS, 'Booking deleted!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only delete your own bookings!') 
+    
+    return redirect('my_bookings')
+
+
+def modify_booking(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    guests=request.POST.get('number_of_guests')
+    button = request.POST.get('form-button')
+    booking_datetime = None
+    table_id= None
+    if button == 'make-booking':
+        booking_date = request.POST.get('booking_date')
+        booking_time = request.POST.get('booking_time')
+        # Convert date and time to datetime
+        booking_datetime = datetime.strptime(f'{booking_date} {booking_time}', '%Y-%m-%d %H:%M')
+        # Make booking_time aware
+        booking_datetime = make_aware(booking_datetime)
+        table_id = request.POST.get('table_id')
+    elif button == 'book-option-1':
+        date = request.POST.get('option-1-time')
+        date = date.rstrip('Z')
+        booking_datetime = make_aware(datetime.fromisoformat(date))
+        table_id = request.POST.get('option-1-table_id')
+    elif button == 'book-option-2':
+        date = request.POST.get('option-2-time')
+        date = date.rstrip('Z')
+        booking_datetime = make_aware(datetime.fromisoformat(date))
+        table_id = request.POST.get('option-2-table_id')
+    elif button == 'book-option-3':
+        date = request.POST.get('option-3-time')
+        date = date.rstrip('Z')
+        booking_datetime = make_aware(datetime.fromisoformat(date))
+        table_id = request.POST.get('option-3-table_id')
+
+    if booking.user == request.user:
+        booking.date = booking_datetime
+        booking.number_of_guests = guests
+        #Delete the outdated bookingtime instances
+        BookingTime.objects.filter(booking=booking).delete()
+        booking.save()
+        #Set start and end time
+        start_time = booking_datetime
+        end_time = start_time + BOOKING_DURATION
+        # Split the tables ids
+        table_ids = table_id.split('-')
+        for table_id in table_ids:
+            # Get tables
+            table = get_object_or_404(Table, table_id=table_id)
+            #BookingTime instance
+            booking_time = BookingTime(booking = booking, table = table, start_time = start_time, end_time = end_time)
+            booking_time.save()
+        messages.add_message(request, messages.SUCCESS, 'Booking modified!')
+    else:
+        messages.add_message(request, messages.ERROR, 'You can only modify your own bookings!') 
+    return redirect('my_bookings')
