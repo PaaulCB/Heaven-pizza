@@ -13,15 +13,18 @@ def FindBooking(request):
         # Get date and time
         booking_date = request.POST.get('booking_date')
         booking_time = request.POST.get('booking_time')
+        guests = request.POST.get('number_of_guests')
         booking_datetime = datetime.strptime(f"{booking_date} {booking_time}", "%Y-%m-%d %H:%M")
         # Make datetime aware
         aware_booking_datetime = make_aware(booking_datetime)
         # Find availables tables
-        available_tables = find_available_tables(aware_booking_datetime)
+        available_tables = find_available_tables(aware_booking_datetime, guests)
         if available_tables:
-            return JsonResponse({'available': True, 'table_id':available_tables[0].table_id})
+            table_ids = [str(table.table_id) for table in available_tables]
+            join_table_id='-'.join(table_ids)
+            return JsonResponse({'available': True, 'table_id':join_table_id})
         else:
-            alternatives = find_alternatives(aware_booking_datetime)
+            alternatives = find_alternatives(aware_booking_datetime, guests)
             return JsonResponse({'available': False, 'alternatives': alternatives})
 
     else:
@@ -68,15 +71,18 @@ def make_booking(request):
         #Set start and end time
         start_time = booking_datetime
         end_time = start_time + BOOKING_DURATION
-        # Get table
-        table = get_object_or_404(Table, table_id=table_id)
-        #BookingTime instance
-        booking_time = BookingTime(booking = booking, table = table, start_time = start_time, end_time = end_time)
-        booking_time.save()
+        # Split the tables ids
+        table_ids = table_id.split('-')
+        for table_id in table_ids:
+            # Get tables
+            table = get_object_or_404(Table, table_id=table_id)
+            #BookingTime instance
+            booking_time = BookingTime(booking = booking, table = table, start_time = start_time, end_time = end_time)
+            booking_time.save()
 
     return render(request,'booking/booking_confirmation.html', {"time" : booking_datetime, "guest" : number_of_guests})
 
-def find_available_tables(booking_datetime):
+def find_available_tables(booking_datetime, guests):
     all_tables = Table.objects.all()
     available_tables = []
     for table in all_tables:
@@ -86,16 +92,27 @@ def find_available_tables(booking_datetime):
             start_time__lte=booking_datetime + BOOKING_DURATION
         ).exists():
             available_tables.append(table)
-    return available_tables
 
+    booking_tables = []
+    capacity_count = 0
+    guests=int(guests)
+    for table in available_tables:
+        booking_tables.append(table)
+        capacity_count += table.capacity
+        if capacity_count >= guests:
+            return booking_tables
+    return []
 
-def find_alternatives(booking_datetime):
+def find_alternatives(booking_datetime, guests):
 
     alternatives = []
+    guests = int(guests)
     current_datetime = booking_datetime
         
     # While loop to find 3 alternatives
     while len(alternatives) < 3:
+        available_tables = []
+        capacity_count = 0
         # Iterate through the tables to check if there any available table at that time
         for table in Table.objects.all():
             if not BookingTime.objects.filter(
@@ -103,13 +120,16 @@ def find_alternatives(booking_datetime):
                 start_time__gte=current_datetime - BOOKING_DURATION,
                 start_time__lte=current_datetime + BOOKING_DURATION
             ).exists():
-                # Appends the table id and the time
-                alternatives.append({
-                    'table_id': table.table_id,
-                    'time': current_datetime
-                })
-                # break the loop if find a table
-                break
+                available_tables.append(table)
+                capacity_count+=table.capacity
+                # If finds enough tables to reach the number of guests ppends the table ids and the time
+                if capacity_count >= guests:
+                    alternatives.append({
+                        'table_id': '-'.join(str(table.table_id) for table in available_tables),
+                        'time': current_datetime
+                    })
+                    # break the loop
+                    break
             
         # Increment the time for the next iteration
         current_datetime += BOOKING_INTERVAL
