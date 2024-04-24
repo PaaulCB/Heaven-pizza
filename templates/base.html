@@ -1,6 +1,7 @@
 {% url 'menu' as menu_url %}
 {% url 'location' as location_url %}
 {% url 'booking_form' as booking_url %}
+{% url 'my_bookings' as my_bookings_url %}
 {% url 'account_login' as login_url %}
 {% url 'account_signup' as signup_url %}
 {% url 'account_logout' as logout_url %}
@@ -46,10 +47,10 @@
                         <li class="nav-item me-3">
                             <a class="nav-link" href="{{location_url}}">Location</a>
                         </li>
+                        {% if user.is_authenticated %}
                         <li class="nav-item me-3">
                             <a class="nav-link" href="{{booking_url}}">Book now</a>
                         </li>
-                        {% if user.is_authenticated %}
                         <li class="nav-item">
                             <div class="row">
                                 <div class="col text-center">
@@ -58,7 +59,7 @@
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <a class="nav-link no-wrap" href="{{booking_url}}">My Bookings </a>
+                                    <a class="nav-link no-wrap" href="{{my_bookings_url}}">My Bookings </a>
                                 </div>
                                 <div class="col">
                                     <a class="nav-link {% if request.path == logout_url %}active{% endif %}" aria-current="page" href="{% url 'account_logout' %}">Logout</a>

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% url 'booking_form' as booking_url %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center">My Bookings</h1>
+    {% if active_bookings or past_bookings %}
+        <h2 class="text-center">Active Bookings</h2>
+        <div class="list-group">
+            {% for booking in active_bookings %}
+                <a href="#collapse{{ booking.booking_id }}" class="list-group-item list-group-item-action text-center" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse{{ booking.id }}">
+                    Booking on: {{ booking.date|date:"D, d M Y H:i" }} for : {{ booking.number_of_guests }} guest{% if booking.number_of_guests > 1 %}s{%endif%}
+                </a>
+                <div class="collapse" id="collapse{{ booking.booking_id }}">
+                    <div class="card card-body text-center">
+                        <a href="#" class="btn btn-primary">Modify</a>
+                        <a href="#" class="btn btn-danger">Cancel</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>You don't have any active booking, you can book <a href="{{booking_url}}">here</a></p>
+            {% endfor %}
+        </div>
+        <h2 class="text-center">Past Bookings</h2>
+        <div class="list-group">
+            {% for booking in past_bookings %}
+                <a href="#collapse{{ booking.booking_id }}" class="list-group-item list-group-item-action text-center" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse{{ booking.id }}">
+                    Booking on: {{ booking.date|date:"D, d M Y H:i" }} for : {{ booking.number_of_guests }} guest{% if booking.number_of_guests > 1 %}s{%endif%}
+                </a>
+                <div class="collapse" id="collapse{{ booking.booking_id }}">
+                    <div class="card card-body text-center">
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No past bookings.</p>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You don't have any booking, you can book <a href="{{booking_url}}">here</a></p>
+    {% endif %}
+</div>
+{% endblock %}

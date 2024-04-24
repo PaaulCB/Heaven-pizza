@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import make_aware
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta
 from .models import Table, BookingTime, Booking
@@ -135,3 +136,18 @@ def find_alternatives(booking_datetime, guests):
         current_datetime += BOOKING_INTERVAL
         
     return alternatives
+
+def my_bookings(request):
+    if request.user.is_authenticated:
+        # Get the current time
+        current_time = timezone.now()
+        # Get the active bookings of the user
+        active_bookings = Booking.objects.filter(user=request.user, date__gt=current_time).order_by('date')
+        # Get the past bookings of the user
+        past_bookings = Booking.objects.filter(user=request.user, date__lte=current_time).order_by('-date')
+        return render(request, 'booking/my_bookings.html', {
+            'active_bookings': active_bookings,
+            'past_bookings': past_bookings
+        })
+    else:
+        return render(request, 'booking/no_authenticated.html')
