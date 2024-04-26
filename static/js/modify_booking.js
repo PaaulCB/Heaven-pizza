@@ -20,3 +20,6 @@ $('#modifyModal').on('show.bs.modal', function (event) {
     form.find('#table_preferences').val(tablePreferences);
     $('#find-table-btn').data('booking-id',bookingId)
 });
+$('#modifyModal').on('hidden.bs.modal', function () {
+    $('#booking-results').html('');
+});
