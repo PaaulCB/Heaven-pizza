@@ -8,7 +8,6 @@ $('#modifyModal').on('show.bs.modal', function (event) {
     var bookingDate = button.data('booking-date');
     var bookingTime = button.data('booking-time');
     var childChair = button.data('child-chair') === 'True';
-    console.log(childChair)
     var allergies = button.data('allergies');
     var tablePreferences = button.data('table-preferences');
     var form = $(this);
@@ -19,4 +18,5 @@ $('#modifyModal').on('show.bs.modal', function (event) {
     form.find('#child_chair').prop('checked', childChair);
     form.find('#allergies').val(allergies);
     form.find('#table_preferences').val(tablePreferences);
+    $('#find-table-btn').data('booking-id',bookingId)
 });

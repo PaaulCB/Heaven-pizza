@@ -16,18 +16,19 @@ def FindBooking(request):
         # Get date and time
         booking_date = request.POST.get('booking_date')
         booking_time = request.POST.get('booking_time')
+        booking_id = request.POST.get('booking_id')
         guests = request.POST.get('number_of_guests')
         booking_datetime = datetime.strptime(f"{booking_date} {booking_time}", "%Y-%m-%d %H:%M")
         # Make datetime aware
         aware_booking_datetime = make_aware(booking_datetime)
         # Find availables tables
-        available_tables = find_available_tables(aware_booking_datetime, guests)
+        available_tables = find_available_tables(aware_booking_datetime, guests, int(booking_id))
         if available_tables:
             table_ids = [str(table.table_id) for table in available_tables]
             join_table_id='-'.join(table_ids)
             return JsonResponse({'available': True, 'table_id':join_table_id})
         else:
-            alternatives = find_alternatives(aware_booking_datetime, guests)
+            alternatives = find_alternatives(aware_booking_datetime, guests, int(booking_id))
             return JsonResponse({'available': False, 'alternatives': alternatives})
 
     else:
@@ -62,15 +63,17 @@ def make_booking(request):
         messages.add_message(request, messages.SUCCESS, 'Booking created!')
     return redirect('booking_form')
 
-def find_available_tables(booking_datetime, guests):
+def find_available_tables(booking_datetime, guests, booking_id):
     all_tables = Table.objects.all()
     available_tables = []
     for table in all_tables:
-        if not BookingTime.objects.filter(
-            table=table,
-            start_time__gte=booking_datetime - BOOKING_DURATION,
-            start_time__lte=booking_datetime + BOOKING_DURATION
-        ).exists():
+        if not BookingTime.objects.exclude(
+                booking__booking_id=booking_id
+            ).filter(
+                table=table,
+                start_time__gte=booking_datetime - BOOKING_DURATION,
+                start_time__lte=booking_datetime + BOOKING_DURATION
+            ).exists():
             available_tables.append(table)
 
     booking_tables = []
@@ -83,7 +86,7 @@ def find_available_tables(booking_datetime, guests):
             return booking_tables
     return []
 
-def find_alternatives(booking_datetime, guests):
+def find_alternatives(booking_datetime, guests, booking_id):
 
     alternatives = []
     guests = int(guests)
@@ -95,7 +98,9 @@ def find_alternatives(booking_datetime, guests):
         capacity_count = 0
         # Iterate through the tables to check if there any available table at that time
         for table in Table.objects.all():
-            if not BookingTime.objects.filter(
+            if not BookingTime.objects.exclude(
+                booking__booking_id=booking_id
+            ).filter(
                 table=table,
                 start_time__gte=current_datetime - BOOKING_DURATION,
                 start_time__lte=current_datetime + BOOKING_DURATION

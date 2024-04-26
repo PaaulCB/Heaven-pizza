@@ -12,10 +12,11 @@ $(document).ready(function() {
             event.preventDefault();
             // Delete the content on booking-results
             $('#booking-results').html('');
+            booking_id = $(document.activeElement).data('booking-id')
             $.ajax({
                 type: 'POST',
                 url: '/booking/',
-                data: $(this).serialize() + '&csrfmiddlewaretoken=' + $('input[name="csrfmiddlewaretoken"]').val(),
+                data: $(this).serialize() + '&csrfmiddlewaretoken=' + $('input[name="csrfmiddlewaretoken"]').val()+ '&booking_id='+booking_id,
                 success: function(response) {
                     if (response.available) {
                         $('#booking-results').html(
