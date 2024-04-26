@@ -1,0 +1,32 @@
+{% csrf_token %}
+<div class="mb-3">
+    <label for="booking_name" class="form-label">Booking name:</label>
+    <input type="text" class="form-control" id="booking_name" name="booking_name" required>
+</div>
+<div class="mb-3">
+    <label for="number_of_guests" class="form-label">Number of guests:</label>
+    <input type="number" class="form-control" id="number_of_guests" name="number_of_guests" required>
+</div>
+<div class="mb-3">
+    <label for="booking_date" class="form-label">Date:</label>
+    <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+</div>
+<div class="mb-3">
+    <label for="booking_time" class="form-label">Time:</label>
+    <input type="time" class="form-control" id="booking_time" name="booking_time" required>
+</div>
+<div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="child_chair" name="child_chair">
+    <label class="form-check-label" for="child_chair">Do you need child chair?</label>
+</div>
+<div class="mb-3">
+    <label for="allergies" class="form-label">Allergies(optional):</label>
+    <textarea class="form-control" id="allergies" name="allergies" rows="3"></textarea>
+</div>
+<div class="mb-3">
+    <label for="table_preferences" class="form-label">Table preferencies(optional):</label>
+    <textarea class="form-control" id="table_preferences" name="table_preferences" rows="3"></textarea>
+</div>
+<div class="text-center mb-3"><button type="submit" name="form-button" value="find_table" class="btn btn-primary"
+        id="find-table-btn">Find table</button></div>
+<div class="text-center mb-3" id="booking-results"></div>

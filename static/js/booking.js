@@ -24,19 +24,13 @@ $(document).ready(function() {
                             '<button type="submit" name="form-button" value="make-booking" class="btn btn-success">Book Now</button>'
                         );
                     } else {
-                        $('#booking-results').html(
-                            '<p>No tables available at the selected time.</p>' +
-                            '<p>This are the next availables times </p>'+
-                            '<input type="hidden" name="option-1-time" value="' + response.alternatives[0].time + '">' +
-                            '<input type="hidden" name="option-1-table_id" value="' + response.alternatives[0].table_id + '">' +
-                            '<button type="submit" name="form-button" value="book-option-1" class="btn btn-success">'+ response.alternatives[0].time +'</button>'+
-                            '<input type="hidden" name="option-2-time" value="' + response.alternatives[1].time + '">' +
-                            '<input type="hidden" name="option-2-table_id" value="' + response.alternatives[1].table_id + '">' +
-                            '<button type="submit" name="form-button" value="book-option-2" class="btn btn-success">'+ response.alternatives[1].time +'</button>'+
-                            '<input type="hidden" name="option-3-time" value="' + response.alternatives[2].time + '">' +
-                            '<input type="hidden" name="option-3-table_id" value="' + response.alternatives[2].table_id + '">' +
-                            '<button type="submit" name="form-button" value="book-option-3" class="btn btn-success">'+ response.alternatives[2].time +'</button>'
-                        );
+                        let content = '<p>No tables available at the selected time.</p><p>These are the next available times:</p>';
+                        response.alternatives.forEach((alt, index) => {
+                            content += `<input type="hidden" name="option-${index + 1}-time" value="${alt.time}">` +
+                                       `<input type="hidden" name="option-${index + 1}-table_id" value="${alt.table_id}">` +
+                                       `<button type="submit" name="form-button" value="book-option-${index + 1}" class="btn btn-success">${alt.time}</button>`;
+                        });
+                        $('#booking-results').html(content);
                     }
                 },
                 error: function() {

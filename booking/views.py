@@ -35,56 +35,22 @@ def FindBooking(request):
 def make_booking(request):
     if request.method == "POST":
         #Get the data from the form
-        number_of_guests = request.POST.get('number_of_guests')
-        if request.POST.get('child_chair') == "on":
-            child_chair = True
-        else:
-            child_chair = False
-        allergies = request.POST.get('allergies')
-        booking_name = request.POST.get('booking_name')
-        table_preferences = request.POST.get('table_preferences')
-        booking_datetime = None
-        table_id= None
-        # Checks witch button was pressed
-        button = request.POST.get('form-button')
-        if button == 'make-booking':
-            booking_date = request.POST.get('booking_date')
-            booking_time = request.POST.get('booking_time')
-            #Convert date and time to datetime
-            booking_datetime = datetime.strptime(f'{booking_date} {booking_time}', '%Y-%m-%d %H:%M')
-            # Make booking_time aware
-            booking_datetime = make_aware(booking_datetime)
-            table_id = request.POST.get('table_id')
-        elif button == 'book-option-1':
-            date = request.POST.get('option-1-time')
-            date = date.rstrip('Z')
-            booking_datetime = make_aware(datetime.fromisoformat(date))
-            table_id = request.POST.get('option-1-table_id')
-        elif button == 'book-option-2':
-            date = request.POST.get('option-2-time')
-            date = date.rstrip('Z')
-            booking_datetime = make_aware(datetime.fromisoformat(date))
-            table_id = request.POST.get('option-2-table_id')
-        elif button == 'book-option-3':
-            date = request.POST.get('option-3-time')
-            date = date.rstrip('Z')
-            booking_datetime = make_aware(datetime.fromisoformat(date))
-            table_id = request.POST.get('option-3-table_id')
+        data = get_data(request)
         #Booking instance
         booking = Booking(
-            date = booking_datetime,
+            date = data['booking_datetime'],
             user = request.user, 
-            number_of_guests = number_of_guests, 
-            child_chair = child_chair, 
-            allergies = allergies,
-            booking_name = booking_name,
-            table_preferences = table_preferences)
+            number_of_guests = data['number_of_guests'], 
+            child_chair = data['child_chair'], 
+            allergies = data['allergies'],
+            booking_name = data['booking_name'],
+            table_preferences = data['table_preferences'])
         booking.save()
         #Set start and end time
-        start_time = booking_datetime
+        start_time = data['booking_datetime']
         end_time = start_time + BOOKING_DURATION
         # Split the tables ids
-        table_ids = table_id.split('-')
+        table_ids = data['table_id'].split('-')
         for table_id in table_ids:
             # Get tables
             table = get_object_or_404(Table, table_id=table_id)
@@ -178,56 +144,22 @@ def delete_booking(request, booking_id):
 
 def modify_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
-    guests=request.POST.get('number_of_guests')
-    button = request.POST.get('form-button')
-    booking_name = request.POST.get('booking_name')
-    table_preferences = request.POST.get('table_preferences')
-    if request.POST.get('child_chair') == "on":
-        child_chair = True
-    else:
-        child_chair = False
-    allergies = request.POST.get('allergies')
-    booking_datetime = None
-    table_id= None
-    if button == 'make-booking':
-        booking_date = request.POST.get('booking_date')
-        booking_time = request.POST.get('booking_time')
-        # Convert date and time to datetime
-        booking_datetime = datetime.strptime(f'{booking_date} {booking_time}', '%Y-%m-%d %H:%M')
-        # Make booking_time aware
-        booking_datetime = make_aware(booking_datetime)
-        table_id = request.POST.get('table_id')
-    elif button == 'book-option-1':
-        date = request.POST.get('option-1-time')
-        date = date.rstrip('Z')
-        booking_datetime = make_aware(datetime.fromisoformat(date))
-        table_id = request.POST.get('option-1-table_id')
-    elif button == 'book-option-2':
-        date = request.POST.get('option-2-time')
-        date = date.rstrip('Z')
-        booking_datetime = make_aware(datetime.fromisoformat(date))
-        table_id = request.POST.get('option-2-table_id')
-    elif button == 'book-option-3':
-        date = request.POST.get('option-3-time')
-        date = date.rstrip('Z')
-        booking_datetime = make_aware(datetime.fromisoformat(date))
-        table_id = request.POST.get('option-3-table_id')
-
+    data = get_data(request)
     if booking.user == request.user:
-        booking.date = booking_datetime
-        booking.child_chair = child_chair
-        booking.allergies = allergies
-        booking.number_of_guests = guests
-        booking.booking_name = booking_name
-        booking.table_preferences = table_preferences
+        booking.date = data['booking_datetime']
+        booking.child_chair = data['child_chair']
+        booking.allergies = data['allergies']
+        booking.number_of_guests = data['number_of_guests']
+        booking.booking_name = data['booking_name']
+        booking.table_preferences = data['table_preferences']
         #Delete the outdated bookingtime instances
         BookingTime.objects.filter(booking=booking).delete()
         booking.save()
         #Set start and end time
-        start_time = booking_datetime
+        start_time = data['booking_datetime']
         end_time = start_time + BOOKING_DURATION
         # Split the tables ids
-        table_ids = table_id.split('-')
+        table_ids = data['table_id'].split('-')
         for table_id in table_ids:
             # Get tables
             table = get_object_or_404(Table, table_id=table_id)
@@ -238,3 +170,36 @@ def modify_booking(request, booking_id):
     else:
         messages.add_message(request, messages.ERROR, 'You can only modify your own bookings!') 
     return redirect('my_bookings')
+
+def get_data(request):
+
+    number_of_guests = request.POST.get('number_of_guests')
+    child_chair = request.POST.get('child_chair') == "on"
+    allergies = request.POST.get('allergies')
+    booking_name = request.POST.get('booking_name')
+    table_preferences = request.POST.get('table_preferences')
+    booking_datetime = None
+    table_id = None
+    # Checks which button was pressed
+    button = request.POST.get('form-button')
+
+    # Get the correct datetime and table_id based on the button pressed
+    if button in ['make-booking', 'book-option-1', 'book-option-2', 'book-option-3']:
+        if button == 'make-booking':
+            date = request.POST.get('booking_date') + ' ' + request.POST.get('booking_time')
+        else:
+            date = request.POST.get(f"{button}-time").rstrip('Z')
+            
+        # Make aware the datetime
+        booking_datetime = make_aware(datetime.strptime(date, '%Y-%m-%d %H:%M') if button == 'make-booking' else datetime.fromisoformat(date))
+        table_id = request.POST.get("table_id") if button == 'make-booking' else request.POST.get(f"{button}-table_id")
+    data = {
+    'number_of_guests': number_of_guests,
+    'child_chair': child_chair,
+    'allergies': allergies,
+    'booking_name': booking_name,
+    'table_preferences': table_preferences,
+    'booking_datetime': booking_datetime,
+    'table_id': table_id
+    }
+    return data
