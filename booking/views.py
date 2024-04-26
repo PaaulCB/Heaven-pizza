@@ -6,9 +6,11 @@ from datetime import datetime, timedelta
 from .models import Table, BookingTime, Booking
 from django.contrib import messages
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 # Constant to store the duration of the booking
 BOOKING_DURATION = timedelta(hours=1)
 BOOKING_INTERVAL = timedelta(minutes=30)
+@login_required
 def FindBooking(request):
     if request.method == 'POST':
         # Get date and time
@@ -30,7 +32,6 @@ def FindBooking(request):
 
     else:
         return render(request, 'booking/booking.html')
-
 
 def make_booking(request):
     if request.method == "POST":
@@ -115,21 +116,18 @@ def find_alternatives(booking_datetime, guests):
         
     return alternatives
 
+@login_required
 def my_bookings(request):
-    if request.user.is_authenticated:
-        # Get the current time
-        current_time = timezone.now()
-        # Get the active bookings of the user
-        active_bookings = Booking.objects.filter(user=request.user, date__gt=current_time).order_by('date')
-        # Get the past bookings of the user
-        past_bookings = Booking.objects.filter(user=request.user, date__lte=current_time).order_by('-date')
-        return render(request, 'booking/my_bookings.html', {
-            'active_bookings': active_bookings,
-            'past_bookings': past_bookings
-        })
-    else:
-        return render(request, 'booking/no_authenticated.html')
-
+    # Get the current time
+    current_time = timezone.now()
+    # Get the active bookings of the user
+    active_bookings = Booking.objects.filter(user=request.user, date__gt=current_time).order_by('date')
+    # Get the past bookings of the user
+    past_bookings = Booking.objects.filter(user=request.user, date__lte=current_time).order_by('-date')
+    return render(request, 'booking/my_bookings.html', {
+        'active_bookings': active_bookings,
+        'past_bookings': past_bookings
+    })
 
 def delete_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
@@ -140,7 +138,6 @@ def delete_booking(request, booking_id):
         messages.add_message(request, messages.ERROR, 'You can only delete your own bookings!') 
     
     return redirect('my_bookings')
-
 
 def modify_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
