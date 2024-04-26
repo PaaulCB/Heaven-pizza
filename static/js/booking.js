@@ -5,7 +5,7 @@ $(document).ready(function() {
           event.preventDefault();
           return false;
         }
-      });
+    });
     $('#booking-form').on('submit', function(event) {
         var button = $(document.activeElement).val();
         if (button === 'find_table') {
@@ -38,5 +38,12 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+    // If the user changes any of the fields relevants for the availability delete the booking-results
+    $('#number_of_guests').on('input', function() {
+        $('#booking-results').html('');
+    });
+    $('#booking_date, #booking_time').on('change', function() {
+        $('#booking-results').html('');
     });
 });
