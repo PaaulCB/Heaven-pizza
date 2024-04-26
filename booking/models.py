@@ -10,7 +10,10 @@ class Booking(models.Model):
     number_of_guests = models.PositiveIntegerField()
     child_chair = models.BooleanField(default=False)
     allergies = models.TextField(blank=True, null=True)
-    
+    booking_name = models.CharField(max_length=50, blank=True, null=True)
+    table_preferences = models.TextField(blank=True, null=True)
+
+
     def __str__(self):
         return f"ID: {self.booking_id} | by {self.user} | Date: { self.date}"
 

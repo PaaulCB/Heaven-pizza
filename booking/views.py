@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from .models import Table, BookingTime, Booking
 from django.contrib import messages
 from django.http import JsonResponse
-from django.db import transaction
 # Constant to store the duration of the booking
 BOOKING_DURATION = timedelta(hours=1)
 BOOKING_INTERVAL = timedelta(minutes=30)
@@ -42,6 +41,8 @@ def make_booking(request):
         else:
             child_chair = False
         allergies = request.POST.get('allergies')
+        booking_name = request.POST.get('booking_name')
+        table_preferences = request.POST.get('table_preferences')
         # Checks witch button was pressed
         button = request.POST.get('form-button')
         if button == 'make-booking':
@@ -68,7 +69,14 @@ def make_booking(request):
             booking_datetime = make_aware(datetime.fromisoformat(date))
             table_id = request.POST.get('option-3-table_id')
         #Booking instance
-        booking = Booking(date = booking_datetime, user = request.user, number_of_guests = number_of_guests, child_chair = child_chair, allergies = allergies)
+        booking = Booking(
+            date = booking_datetime,
+            user = request.user, 
+            number_of_guests = number_of_guests, 
+            child_chair = child_chair, 
+            allergies = allergies,
+            booking_name = booking_name,
+            table_preferences = table_preferences)
         booking.save()
         #Set start and end time
         start_time = booking_datetime
@@ -169,6 +177,13 @@ def modify_booking(request, booking_id):
     booking = get_object_or_404(Booking, pk=booking_id)
     guests=request.POST.get('number_of_guests')
     button = request.POST.get('form-button')
+    booking_name = request.POST.get('booking_name')
+    table_preferencies = request.POST.get('table_preferencies')
+    if request.POST.get('child_chair') == "on":
+        child_chair = True
+    else:
+        child_chair = False
+    allergies = request.POST.get('allergies')
     booking_datetime = None
     table_id= None
     if button == 'make-booking':
@@ -197,7 +212,11 @@ def modify_booking(request, booking_id):
 
     if booking.user == request.user:
         booking.date = booking_datetime
+        booking.child_chair = child_chair
+        booking.allergies = allergies
         booking.number_of_guests = guests
+        booking.booking_name = booking_name
+        booking.table_preferencies = table_preferencies
         #Delete the outdated bookingtime instances
         BookingTime.objects.filter(booking=booking).delete()
         booking.save()
