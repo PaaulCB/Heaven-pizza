@@ -181,7 +181,7 @@ def modify_booking(request, booking_id):
     guests=request.POST.get('number_of_guests')
     button = request.POST.get('form-button')
     booking_name = request.POST.get('booking_name')
-    table_preferencies = request.POST.get('table_preferencies')
+    table_preferences = request.POST.get('table_preferences')
     if request.POST.get('child_chair') == "on":
         child_chair = True
     else:
@@ -219,7 +219,7 @@ def modify_booking(request, booking_id):
         booking.allergies = allergies
         booking.number_of_guests = guests
         booking.booking_name = booking_name
-        booking.table_preferencies = table_preferencies
+        booking.table_preferences = table_preferences
         #Delete the outdated bookingtime instances
         BookingTime.objects.filter(booking=booking).delete()
         booking.save()

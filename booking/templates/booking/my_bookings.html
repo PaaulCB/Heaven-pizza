@@ -14,7 +14,21 @@
                 </a>
                 <div class="collapse" id="collapse{{ booking.booking_id }}">
                     <div class="card card-body text-center">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modifyModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'modify_booking' '9999' %}">Modify Booking</button>
+                        <button 
+                        type="button" class="btn btn-primary" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#modifyModal" 
+                        data-booking-id="{{ booking.booking_id }}" 
+                        data-booking-name="{{ booking.booking_name }}" 
+                        data-number-of-guests="{{ booking.number_of_guests }}" 
+                        data-booking-date="{{ booking.date|date:'Y-m-d' }}" 
+                        data-booking-time="{{ booking.date|time:'H:i' }}"
+                        data-child-chair="{{ booking.child_chair }}"
+                        data-allergies="{{ booking.allergies }}"
+                        data-table-preferences="{{ booking.table_preferences }}"
+                        data-url="{% url 'modify_booking' '9999' %}">
+                        Modify Booking
+                        </button>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'delete_booking' '9999' %}">Cancel Booking</button>
                     </div>
                 </div>
@@ -98,7 +112,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="table_preferences" class="form-label">Table preferences(optional):</label>
-                            <textarea class="form-control" id="table_preferencies" name="table_preferences" rows="3"></textarea>
+                            <textarea class="form-control" id="table_preferences" name="table_preferences" rows="3"></textarea>
                         </div>
                         <div class="text-center mb-3"><button type="submit" name="form-button" value = "find_table" class="btn btn-primary" id="find-table-btn">Find table</button></div>
                         <div class="text-center mb-3" id="booking-results"></div>
@@ -110,7 +124,7 @@
 </div>
 {% endblock %}
 {% block extras %}
+<script src="{% static 'js/booking.js' %}"></script>
 <script src="{% static 'js/delete_booking.js' %}"></script>
 <script src="{% static 'js/modify_booking.js' %}"></script>
-<script src="{% static 'js/booking.js' %}"></script>
 {% endblock%}
