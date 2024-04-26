@@ -43,6 +43,8 @@ def make_booking(request):
         allergies = request.POST.get('allergies')
         booking_name = request.POST.get('booking_name')
         table_preferences = request.POST.get('table_preferences')
+        booking_datetime = None
+        table_id= None
         # Checks witch button was pressed
         button = request.POST.get('form-button')
         if button == 'make-booking':
@@ -90,7 +92,8 @@ def make_booking(request):
             booking_time = BookingTime(booking = booking, table = table, start_time = start_time, end_time = end_time)
             booking_time.save()
 
-    return render(request,'booking/booking_confirmation.html', {"time" : booking_datetime, "guest" : number_of_guests})
+        messages.add_message(request, messages.SUCCESS, 'Booking created!')
+    return redirect('booking_form')
 
 def find_available_tables(booking_datetime, guests):
     all_tables = Table.objects.all()
