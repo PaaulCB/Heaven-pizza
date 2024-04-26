@@ -1,4 +1,6 @@
+import { updateDateTimeMin } from './update_datetime.js';
 $(document).ready(function() {
+    updateDateTimeMin();
     // Disable the Enter to send the form
     $(window).keydown(function(event){
         if(event.keyCode == 13) {
@@ -12,7 +14,7 @@ $(document).ready(function() {
             event.preventDefault();
             // Delete the content on booking-results
             $('#booking-results').html('');
-            booking_id = $(document.activeElement).data('booking-id')
+            var booking_id = $(document.activeElement).data('booking-id')
             $.ajax({
                 type: 'POST',
                 url: '/booking/',
