@@ -4,10 +4,10 @@
 {% load static %}
 {% block content %}
 <div class="container">
-    <h1 class="text-center">My Bookings</h1>
+    <h1 class="text-center righteous ">My Bookings</h1>
     {% if active_bookings or past_bookings %}
-        <h2 class="text-center">Active Bookings</h2>
-        <div class="list-group">
+        <h4 class="text-center kameron my-3">Active Bookings</h4>
+        <div class="list-group kameron ">
             {% for booking in active_bookings %}
                 <a href="#collapse{{ booking.booking_id }}" class="list-group-item list-group-item-action text-center" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse{{ booking.id }}">
                     Booking on: {{ booking.date|date:"D, d M Y H:i" }} for : {{ booking.number_of_guests }} guest{% if booking.number_of_guests > 1 %}s{%endif%}
@@ -15,7 +15,7 @@
                 <div class="collapse" id="collapse{{ booking.booking_id }}">
                     <div class="card card-body text-center">
                         <button 
-                        type="button" class="btn btn-primary" 
+                        type="button" class="btn btn-modify mb-2" 
                         data-bs-toggle="modal" 
                         data-bs-target="#modifyModal" 
                         data-booking-id="{{ booking.booking_id }}" 
@@ -29,30 +29,30 @@
                         data-url="{% url 'modify_booking' '9999' %}">
                         Modify Booking
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'delete_booking' '9999' %}">Cancel Booking</button>
+                        <button type="button" class="btn btn-cancel" data-bs-toggle="modal" data-bs-target="#cancelModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'delete_booking' '9999' %}">Cancel Booking</button>
                     </div>
                 </div>
             {% empty %}
-                <p>You don't have any active booking, you can book <a href="{{booking_url}}">here</a></p>
+                <p class="text-center">You don't have any active booking, you can book <a href="{{booking_url}}">here</a></p>
             {% endfor %}
         </div>
-        <h2 class="text-center">Past Bookings</h2>
-        <div class="list-group">
+        <h4 class="text-center kameron my-3">Past Bookings</h4>
+        <div class="list-group kameron pb-3">
             {% for booking in past_bookings %}
                 <a href="#collapse{{ booking.booking_id }}" class="list-group-item list-group-item-action text-center" data-bs-toggle="collapse" aria-expanded="false" aria-controls="collapse{{ booking.id }}">
                     Booking on: {{ booking.date|date:"D, d M Y H:i" }} for : {{ booking.number_of_guests }} guest{% if booking.number_of_guests > 1 %}s{%endif%}
                 </a>
                 <div class="collapse" id="collapse{{ booking.booking_id }}">
                     <div class="card card-body text-center">
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#cancelModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'delete_booking' '9999' %}">Cancel Booking</button>
+                        <button type="button" class="btn btn-cancel" data-bs-toggle="modal" data-bs-target="#cancelModal" data-booking-id="{{ booking.booking_id }}" data-url="{% url 'delete_booking' '9999' %}">Cancel Booking</button>
                     </div>
                 </div>
             {% empty %}
-                <p>No past bookings.</p>
+                <p class="text-center">No past bookings saved.</p>
             {% endfor %}
         </div>
     {% else %}
-        <p>You don't have any booking, you can book <a href="{{booking_url}}">here</a></p>
+        <p class="text-center">You don't have any booking, you can book <a href="{{booking_url}}">here</a></p>
     {% endif %}
 </div>
 <!-- Cancel booking modal-->
@@ -60,14 +60,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="cancelModalLabel">Cancel Booking?</h5>
+                <h5 class="modal-title righteous " id="cancelModalLabel">Cancel Booking?</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body kameron ">
                 Are you sure?
                 This action cannot be undone.
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer kameron ">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <a id="cancelConfirm" href="#" class="btn btn-danger">Confirm</a>
             </div>
@@ -79,11 +79,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modifyModalLabel">Modify Booking</h5>
+                <h5 class="modal-title righteous " id="modifyModalLabel">Modify Booking</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container kameron ">
                     <form method="POST" action="{% url 'modify_booking' 9999%}" id="booking-form">
                         {% include 'booking_form.html' %}
                     </form>

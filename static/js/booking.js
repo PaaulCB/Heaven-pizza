@@ -22,16 +22,16 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response.available) {
                         $('#booking-results').html(
-                            '<p>Table available!.</p>' +
+                            '<p>Table available!</p>' +
                             '<input type="hidden" name="table_id" value="' + response.table_id + '">' +
-                            '<button type="submit" name="form-button" value="make-booking" class="btn btn-success">Book Now</button>'
+                            '<button type="submit" name="form-button" value="make-booking" class="btn btn-book">Book Now</button>'
                         );
                     } else {
                         let content = '<p>No tables available at the selected time.</p><p>These are the next available times:</p>';
                         response.alternatives.forEach((alt, index) => {
                             content += `<input type="hidden" name="book-option-${index + 1}-time" value="${alt.time}">` +
                                        `<input type="hidden" name="book-option-${index + 1}-table_id" value="${alt.table_id}">` +
-                                       `<button type="submit" name="form-button" value="book-option-${index + 1}" class="btn btn-success">${alt.time}</button>`;
+                                       `<button type="submit" name="form-button" value="book-option-${index + 1}" class="btn btn-book m-1">Book on<br>${alt.time}</button>`;
                         });
                         $('#booking-results').html(content);
                     }

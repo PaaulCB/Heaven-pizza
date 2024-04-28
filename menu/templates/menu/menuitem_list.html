@@ -3,10 +3,10 @@
 {% block content %}
 <div class="container">
     <!-- Only 2 columns per row on small screens and as much as types, for medium+ screens -->
-    <div class="row row-cols-2 row-cols-md-{{ types|length }}">
+    <div class="row row-cols-2 row-cols-md-{{ types|length }} my-2">
         {% for type in types %}
         <div class="col ">
-            <div class="type-option align-items-center text-center pt-3 pb-3 mt-2 mb-2" data-type="{{ type }}">
+            <div class="type-option align-items-center text-center pt-3 pb-3 mt-2 mb-2 righteous pointer menu-filter" data-type="{{ type }}">
                 <h4>{{ type }}</h4>
             </div>
         </div>   
@@ -22,16 +22,16 @@
                             <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="img-fluid">
                         </div>
                         <div class="col-8">
-                            <h5 class="card-title">{{ item.name }}</h5>
+                            <h5 class="card-title righteous">{{ item.name }}</h5>
                             <div class="d-flex flex-column mb-2">
                                 <div class="d-flex align-items-center">
                                     <small class="text-muted">{{ item.price }}</small>
                                     {% if item.badge %}
-                                    <span class="badge bg-primary ms-2">{{ item.badge }}</span>
+                                    <span class="badge ms-2">{{ item.badge }}</span>
                                     {% endif %}
                                 </div>
                             </div>
-                            <p class="card-text">
+                            <p class="card-text kameron">
                                 {{ item.description }}
                                 <small class="text-muted">{{ item.kcal }} kcal</small>
                             </p>
