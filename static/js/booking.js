@@ -28,8 +28,8 @@ $(document).ready(function () {
             var currentTime = hour + ":" + minute;
             var currentDateTime = new Date(currentDate + 'T' + currentTime);
             // Get the date and time that the user entered
-            var userDate = $('#booking_date').val()
-            var userTime = $('#booking_time').val()
+            var userDate = $('#booking_date').val();
+            var userTime = $('#booking_time').val();
             var userDateTime = new Date(userDate + 'T' + userTime);
             // If the datetime of the user is lower than the datetime now show a descriptive message
             if (userDateTime < currentDateTime) {
@@ -37,7 +37,7 @@ $(document).ready(function () {
             // If not contienue with the ajax 
             } else {
                 //Get the booking_id(If the user its creating a booking booking_id will be 0)
-                var booking_id = $(document.activeElement).data('booking-id')
+                var booking_id = $(document.activeElement).data('booking-id');
                 $.ajax({
                     type: 'POST',
                     url: '/booking/',
