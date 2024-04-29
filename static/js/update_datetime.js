@@ -9,6 +9,6 @@ export function updateDateTimeMin() {
     var currentDate = year + "-" + month + "-" + day;
     var currentTime = hour + ":" + minute;
 
-    $('#booking_date').attr('min', currentDate);
-    $('#booking_time').attr('min', currentTime);
+    $('#booking_date').val(currentDate);
+    $('#booking_time').val(currentTime);
 }
