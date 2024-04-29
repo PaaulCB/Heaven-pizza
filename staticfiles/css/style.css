@@ -1,7 +1,163 @@
-.type-active{
-    background-color: aquamarine;
+/*Google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Kameron:wght@400..700&family=Righteous&display=swap');
+
+body{
+    background-color: #ECEBE4;
+}
+main{
+    min-height:70vh;
+}
+nav,footer{
+    min-height: 15vh;
+    background-color: #d6cdcd;
+}
+.type-active {
+    background-color: #fafaff;
+    border-radius: 10px;
+}
+.pointer{
+    cursor: pointer;
+}
+.menu-filter:hover{
+    background-color: #fafaff;
+    border-radius: 10px;
+}
+.card{
+    background-color: #f9f8f2;
+}
+.badge{
+    background-color: #000;
+    color: #fafaff;
+}
+.signup ul {
+    list-style-type: none;
+}
+
+.authentication-form{
+border: 2px solid;
+margin-top: 10px;
+margin-bottom: 10px;
+padding-top: 10px;
+padding-bottom: 10px;
+border-radius: 20px;
+}
+.authentication-form input {
+    border-radius: 10px;
+    padding-left: 5px;
+}
+.btn-principal{
+    background-color: #ecdd7e;
+}
+.btn-principal:hover{
+    background-color: #ffc107;
+}
+.btn-cancel{
+    background-color: #d77983;
+}
+.btn-cancel:hover{
+    background-color: #ec616f;
+}
+.btn-modify{
+    background-color: #98b2e7;
+}
+.btn-modify:hover{
+    background-color: #6d8cc9;
+}
+.btn-book{
+    background-color: #92ef94;
+}
+.btn-book:hover{
+    background-color: #46e950;
+}
+.alert{
+    border:2px solid;
+    background-color: #fafaff;
 }
 /*Map styles*/
+.map-container {
+    display: flex;
+    justify-content: center;
+    height: 60vh;
+    
+}
 div#map {
-    height: 70vh;
+    height: 50vh;
+    width: 60vw;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.title-container {
+    min-height: 47vh;
+    background-image: url('../images/title_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.title-container p {
+    color:#fafaff;
+    
+}
+.title-subcontainer {
+    border: 1px solid #8b6737;
+    min-height: 23vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title-subcontainer a {
+    text-decoration: none;
+    color: #b47852;
+}
+.title-subcontainer a:hover{
+    color: #311103;
+}
+
+.booking-bg {
+    min-height: 100%;
+    background-image: url('../images/booking_bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: whitesmoke;
+}
+.text-book-now{
+    background-color: #00000021;
+}
+.logo-img {
+    height: 75px;
+    width: auto;
+    margin-right: 10px;
+}
+
+footer i{
+    font-size:30px;
+    color:#b47852;
+}
+
+footer i:hover{
+    color:#311103;
+}
+/*font classes*/
+.righteous {
+    font-family: "Righteous", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.cormorant-upright {
+    font-family: "Cormorant Upright", serif;
+    font-weight: 700;
+    font-style: normal;
+}
+
+.kameron {
+    font-family: "Kameron", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
