@@ -20,7 +20,7 @@ $('#modifyModal').on('show.bs.modal', function (event) {
     form.find('#child_chair').prop('checked', childChair);
     form.find('#allergies').val(allergies);
     form.find('#table_preferences').val(tablePreferences);
-    $('#find-table-btn').data('booking-id',bookingId)
+    $('#find-table-btn').data('booking-id',bookingId);
 });
 $('#modifyModal').on('hidden.bs.modal', function () {
     // Reset booking-result after closing a modal
