@@ -1,5 +1,39 @@
 # Heaven Pizza | Testing
 
+Return to [README](README.md)
+- - -
+
+## Responsiveness
+
+<details>
+<summary> Desktop
+</summary>
+
+![Desktop](documentation/validation/desktop.png)
+</details>
+
+<details>
+<summary> Laptop
+</summary>
+
+![Laptop](documentation/validation/laptop.png)
+</details>
+
+
+<details>
+<summary> Tablet
+</summary>
+
+![Tablet](documentation/validation/tablet.png)
+</details>
+
+<details>
+<summary> Mobile
+</summary>
+
+![Mobile](documentation/validation/mobile.png)
+</details>
+
 ## Code validation
 
 ### Html validation
@@ -53,13 +87,22 @@
 ![My bookings validator](documentation/validation/my-bookings-validator.png)
 </details>
 
+<details>
+<summary> Signup page
+</summary>
+
+![My bookings validator](documentation/validation/signup-validator.png)
+
+There are 4 error related to missing span and p tag, but there are on the code. This form was taken from django.allauth templates.     
+</details>
+
 ### CSS Validation
 
 <details>
 <summary> Custom CSS (style.css)
 </summary>
 
-![Custom CSS (style.css)](documentation/validation/css-validator.PNG)
+![Custom CSS (style.css)](documentation/validation/css-validator.png)
 </details>
 
 
@@ -261,5 +304,23 @@
 |               | CRUD functionality | Working as expected | PASS |
 | Footer(any page) |  |    |    |
 |               | Click on social links | Open new tab with appropriate link | PASS |
+
+
+## Bugs
+
+### Fixed Bugs
+
+- When first deployed my map on location page it didn't appear, somehow the staticfiles didn't load properly, i run python3 manage.py collectstatic and deployed again and the problem was solved. Commit **c9da11a**
+
+- There was a bug where the user after checking the availability and get the button to book he could change the data from the form to book at any time. I fix it by deleting the button to book if the user changes any field relevant to the booking availability. Commit **b39d776**
+
+- I had a bug where booking with an alternative time give error. The problem was that my logic didn't matched with my elements name, i fixed by changing the elements name where necessary. Commit **652167b**
+
+- I had a bug where if the user tried to modify a booking, pressed find table, get any result, close that booking and open another one,he had the results of the previous booking on the new one. I fixed by deleting the results when the booking form its closed. Commit **325208e**
+
+- I had an unexpected interaction with the min value of the date and time field form. When the page its load i set the min values to the actual time, unfortunatly as they are independient field it didn't work as intented. I fix it by removing the min value and checking if the date and time gived by the user was greater than the actual date with jQuery. Commit **57ab7e9** 
+
+### Unfixed bugs
+
 
 Return to [README](README.md)
