@@ -1,4 +1,5 @@
 export function updateDateTimeMin() {
+    // Function to get the date and time now and show it on the relatives form fields
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
     var month = ("0" + (now.getMonth() + 1)).slice(-2);

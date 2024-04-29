@@ -9,9 +9,14 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 # Constant to store the duration of the booking
 BOOKING_DURATION = timedelta(hours=1)
+# Constant to store the interval between bookings(used to find alternatives)
 BOOKING_INTERVAL = timedelta(minutes=30)
 @login_required
 def FindBooking(request):
+    """
+    This view checks if there its a booking available with the data provided by the user.
+    If its not give him alternatives times for the booking.
+    """
     if request.method == 'POST':
         # Get date and time
         booking_date = request.POST.get('booking_date')
@@ -35,8 +40,13 @@ def FindBooking(request):
         return render(request, 'booking/booking.html')
 
 def make_booking(request):
+    """
+    This view creates the Booking and BookingTime instances on the database
+    If the user needs to book more than a table create multiple BookingTime instances
+    with the same Booking id
+    """
     if request.method == "POST":
-        #Get the data from the form
+        #Get the data
         data = get_data(request)
         #Booking instance
         booking = Booking(
@@ -64,9 +74,20 @@ def make_booking(request):
     return redirect('booking_form')
 
 def find_available_tables(booking_datetime, guests, booking_id):
+    """
+    Function the  check if there are any available table at the time provided
+    for the number of guest provided.
+    Returns [] if not available
+    """
+    # Gets all the tables
     all_tables = Table.objects.all()
     available_tables = []
+    # Iterate through the tables
     for table in all_tables:
+        # If dont find any bookingTime where the table=table, 
+        # the start_time its greater than or equal to the date-BOOKING_DURATION,
+        # and the end_time its lesser than or equal to the date+BOOKING_DURATION 
+        # Excluding the ones where the booking_id = booking_id provided
         if not BookingTime.objects.exclude(
                 booking__booking_id=booking_id
             ).filter(
@@ -74,17 +95,20 @@ def find_available_tables(booking_datetime, guests, booking_id):
                 start_time__gte=booking_datetime - BOOKING_DURATION,
                 start_time__lte=booking_datetime + BOOKING_DURATION
             ).exists():
+            # Append it to available_tables
             available_tables.append(table)
 
     booking_tables = []
     capacity_count = 0
     guests=int(guests)
+    # Iterate through available tables
     for table in available_tables:
         booking_tables.append(table)
         capacity_count += table.capacity
         if capacity_count >= guests:
+            # If there are enough tables availables to fit the number of guest then return booking_tables
             return booking_tables
-    return []
+    return [] # Otherwise return []
 
 def find_alternatives(booking_datetime, guests, booking_id):
 
@@ -107,7 +131,7 @@ def find_alternatives(booking_datetime, guests, booking_id):
             ).exists():
                 available_tables.append(table)
                 capacity_count+=table.capacity
-                # If finds enough tables to reach the number of guests ppends the table ids and the time
+                # If finds enough tables to reach the number of guests appends the table ids and the time
                 if capacity_count >= guests:
                     alternatives.append({
                         'table_id': '-'.join(str(table.table_id) for table in available_tables),
@@ -123,6 +147,11 @@ def find_alternatives(booking_datetime, guests, booking_id):
 
 @login_required
 def my_bookings(request):
+    """
+    View to show the booking of the user.
+    login_requiered its used to ensure that the user its logged in
+    return the bookings splited in active and past bookings
+    """
     # Get the current time
     current_time = timezone.now()
     # Get the active bookings of the user
@@ -135,6 +164,9 @@ def my_bookings(request):
     })
 
 def delete_booking(request, booking_id):
+    """
+    View to delete a booking
+    """
     booking = get_object_or_404(Booking, pk=booking_id)
     if booking.user == request.user:
         booking.delete()
@@ -145,8 +177,11 @@ def delete_booking(request, booking_id):
     return redirect('my_bookings')
 
 def modify_booking(request, booking_id):
-    booking = get_object_or_404(Booking, pk=booking_id)
-    data = get_data(request)
+    """
+    View to modify a booking
+    """
+    booking = get_object_or_404(Booking, pk=booking_id) # Gets the booking
+    data = get_data(request) # Gets the data
     if booking.user == request.user:
         booking.date = data['booking_datetime']
         booking.child_chair = data['child_chair']
@@ -154,7 +189,7 @@ def modify_booking(request, booking_id):
         booking.number_of_guests = data['number_of_guests']
         booking.booking_name = data['booking_name']
         booking.table_preferences = data['table_preferences']
-        #Delete the outdated bookingtime instances
+        #Delete the outdated BookingTime instances
         BookingTime.objects.filter(booking=booking).delete()
         booking.save()
         #Set start and end time
@@ -174,7 +209,9 @@ def modify_booking(request, booking_id):
     return redirect('my_bookings')
 
 def get_data(request):
-
+    """
+    Function to get the data
+    """
     number_of_guests = request.POST.get('number_of_guests')
     child_chair = request.POST.get('child_chair') == "on"
     allergies = request.POST.get('allergies')
@@ -195,6 +232,7 @@ def get_data(request):
         # Make aware the datetime
         booking_datetime = make_aware(datetime.strptime(date, '%Y-%m-%d %H:%M') if button == 'make-booking' else datetime.fromisoformat(date))
         table_id = request.POST.get("table_id") if button == 'make-booking' else request.POST.get(f"{button}-table_id")
+    # Set the data
     data = {
     'number_of_guests': number_of_guests,
     'child_chair': child_chair,
@@ -204,4 +242,4 @@ def get_data(request):
     'booking_datetime': booking_datetime,
     'table_id': table_id
     }
-    return data
+    return data # Return the data

@@ -8,6 +8,10 @@ DRINK = 'Drink'
 TYPE = ((STARTER, "Starter"), (ENTREE, "Entree"), (DESSERT, "Dessert"), (DRINK, "Drink"))
 # Create your models here.
 class MenuItem(models.Model):
+    """
+    This modal stores all the information about the menu items
+    Only an admin from the admin panel can add, delete or modify items
+    """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     description = models.TextField()
