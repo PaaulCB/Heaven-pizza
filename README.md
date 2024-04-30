@@ -210,6 +210,24 @@ This were wireframes before starting the proyect.
 
         ![Messages](documentation/readme_images/message.png)
 
+### Security features
+
+- User Authentication
+    
+    Django Allauth is a popular authentication and authorization library for Django, which provides a set of features for managing user authentication, registration, and account management.
+
+- Login_required decorator
+
+    Restringed not logged in user to access the booking page by using the django @login_required decorator on the necessary views. Additionaly I hide the option to go to booking from the navbar(But they can still typing it manually, that why the need of the decorator).
+
+- Check request.user==booking.user
+
+    When the user wants to modify or delete a booking I check that he was the one who create the booking on first place, so he cant change or delate anyones else booking even if he manages to do the request to the database.
+
+- CSRF Protection 
+
+    Django provides built-in protection against Cross-Site Request Forgery (CSRF) attacks. CSRF tokens are generated for each user session, and they are required to submit forms or perform state-changing actions. When a user logs out, the session and associated CSRF token are invalidated, making it difficult for an attacker to forge a valid request using a copied URL.
+
 
 ## Deployment and Local Developement
 
