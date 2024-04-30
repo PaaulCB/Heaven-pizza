@@ -55,9 +55,10 @@ $(document).ready(function () {
                         } else {
                             let content = '<p>No tables available at the selected time.</p><p>These are the next available times:</p>';
                             response.alternatives.forEach((alt, index) => {
+                                let timeFormated = alt.time.replace('T', ' ').replace('Z', '');
                                 content += `<input type="hidden" name="book-option-${index + 1}-time" value="${alt.time}">` +
                                     `<input type="hidden" name="book-option-${index + 1}-table_id" value="${alt.table_id}">` +
-                                    `<button type="submit" name="form-button" value="book-option-${index + 1}" class="btn btn-book m-1">Book on<br>${alt.time}</button>`;
+                                    `<button type="submit" name="form-button" value="book-option-${index + 1}" class="btn btn-book m-1">Book on<br>${timeFormated}</button>`;
                             });
                             $('#booking-results').html(content);
                         }

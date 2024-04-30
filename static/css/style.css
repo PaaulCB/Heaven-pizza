@@ -42,7 +42,7 @@ footer{
     background-color: #000;
     color: #fafaff;
 }
-.signup ul {
+.signup ul, .login ul {
     list-style-type: none;
 }
 
@@ -149,6 +149,15 @@ footer i{
 
 footer i:hover{
     color:#311103;
+}
+/*Message style*/
+.message-style{
+    position: absolute;
+    opacity: 0.9;
+    right: 20%;
+    width: auto;
+    left: 20%;
+    z-index: 1;
 }
 /*Utility classes*/
 .no-wrap {
