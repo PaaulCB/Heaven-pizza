@@ -1,9 +1,10 @@
 # Heaven pizza
 
-[View Heaven Pizza live website here](https://heaven-pizza-d4d6b12eae4a.herokuapp.com/)
-
+Heaven Pizza it's an webside for a Napolitan restaurant who wants to provide a friendly, intuitive and easy to use site for their users to book a table on his future favorite Napolitan restaurant. The target of this site are those user who **LOVE** the Napolitan *cousine*, along with the ones who never tried and wants to.
 
 ![Heaven pizza](documentation/readme_images/home-loggedin.png)
+
+[View Heaven Pizza live website here](https://heaven-pizza-d4d6b12eae4a.herokuapp.com/)
 
 ## Design
 
@@ -309,3 +310,23 @@ Live deployment can be found [here](https://github.com/PaaulCB/Heaven-pizza)
 ## Testing
 
 Please see  [TESTING.md](TESTING.md) for all the detailed testing performed.
+
+## Credits
+
+### Content
+
+- The items of the menu were taken form a mix of italian restaurants that I like ([Rudy's](https://www.rudyspizza.co.uk/pizzerias/soho) and [Pizza express](https://www.pizzaexpress.com/)).
+- The base code to implement the updateDateTimeMin function was taken from [Stackoverflow](https://stackoverflow.com/questions/6040515/how-do-i-get-month-and-date-of-javascript-in-2-digit-format)
+- The code institute proyect walkthrogh was follow through the development of this proyect.
+- [This](https://github.com/Thomas-Tomo/woodland-whispers-retreat/blob/main/README.md) README.md was used as base to build this README.md
+- [w3schools](https://www.w3schools.com/) and  [bootstrap](https://getbootstrap.com/docs/5.3/getting-started/introduction/) docs where used while building the proyect.
+- The login, signup and logout forms where taken form django allauth.
+
+### Media
+
+- The logo was made by my partner using Adobe Ilustrator.
+- [favicon.io](https://favicon.io/) was used to generete the favicon.
+- All the menu items images where taken form google and removed the background with [removal.ai](https://removal.ai/)
+- The background image on the home page was taken from [google](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.visitduesseldorf.de%2Fstorys%2Fen%2F2023%2F09%2F05%2Fhotspots-pizzaioli%2F&psig=AOvVaw3h6FPsn7qFH4VYfUIfHbX8&ust=1714540040465000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCIDa9cGV6YUDFQAAAAAdAAAAABAE)
+
+
