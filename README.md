@@ -2,6 +2,88 @@
 
 [View Heaven Pizza live website here](https://heaven-pizza-d4d6b12eae4a.herokuapp.com/)
 
+
+![Heaven pizza](documentation/readme_images/home-loggedin.png)
+
+## Design
+
+### Color Scheme
+
+This are the main colors used for the website.
+
+![Main colors](documentation/readme_images/colors.png)
+
+### Typography
+
+The font used for this proyect are:
+
+- *Righteous* for important titles
+- *Cormorant Upright* for the navbar
+- *Kameron* as base typography
+
+### Database Scheme
+
+Entity Relationship Diagram
+
+![ERD](documentation/readme_images/erd.png)
+
+- Booking store related to the booking such as date,user,number_of_guests, child_chair, allergies, booking_name and table_preferencies.
+- Table store the tables of Heaven Pizza along with the capacity, it not intented to be mutable so if need any change, needs to be done manually from de admin panel.
+- BookingTime its the table that connect the booking with the tables for x amount of time. If the booking needs more than one table to accomodate all the guests
+it will create multiple instance with the same booking_id but diferents table_id (and with the same start and end time on all of them).
+
+
+### Wireframes
+
+This were wireframes before starting the proyect.
+
+<details>
+<summary> Logged out
+</summary>
+
+![Loggued out](documentation/readme_images/wf-loggedout.png)
+</details>
+
+<details>
+<summary> Logged in
+</summary>
+
+![Loggued in](documentation/readme_images/wf-loggedin.png)
+</details>
+
+<details>
+<summary> Home
+</summary>
+
+![Home](documentation/readme_images/wf-home.png)
+</details>
+
+<details>
+<summary> Menu
+</summary>
+
+![Menu](documentation/readme_images/wf-menu.png)
+</details>
+
+<details>
+<summary> Booking
+</summary>
+
+![Booking](documentation/readme_images/wf-booking.png)
+</details>
+
+<details>
+<summary> My bookings
+</summary>
+
+![My bookings](documentation/readme_images/wf-my-bookings.png)
+</details>
+
+
+### User experience
+
+- This site was made taking in mind the user experience, resulting of that it has an intuitive and easy to navegate navbar, descriptive messages when the user introduce an incorrect data and a response every time that the user expect one(modify, delete, create booking / login and logout).
+
 ## Features 
 
 ### Existing features
